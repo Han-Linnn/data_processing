@@ -9,7 +9,7 @@ import string
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import wordnet
-import text_hammer as th
+# import text_hammer as th
 
 # from sklearn.feature_extraction.text import CountVectorizer
 # from sklearn.model_selection import train_test_split
@@ -305,7 +305,7 @@ def preProcessing():
     df['text'] = df['text'].apply(lambda text: remove_emoticons(text)) # remove emoticons
     df['text'] = df['text'].apply(lambda text: remove_mentions(text)) # remove mentions
     df['text'] = df['text'].apply(lambda text: word_lemmatizer(text)) # lemmatize words
-    df['text'] = df['text'].apply(lambda text: th.cont_exp(text)) # convert i'm to i am, you're to you are, etc
+    # df['text'] = df['text'].apply(lambda text: th.cont_exp(text)) # convert i'm to i am, you're to you are, etc
 
     # test_df['text'] = test_df['text'].str.lower() # convert to lowercase
     # test_df['text'] = test_df['text'].apply(lambda text: remove_urls(text)) # remove URLs
