@@ -6,8 +6,7 @@ kind: ecu
 # Define the files that are part of the package
 files:
 - data_processing.py
-- train.csv
-- test.csv
+- data/
 
 # Defines the file to call whenever a function is called
 entrypoint:
@@ -40,6 +39,10 @@ actions:
       args:
       - preProcessing
     input:
+      - type: string
+        name: csv_path
+      - type: string
+        name: output_path
     output:
     # Define the output: a string, identifyable by the 'output' key
       - type: string

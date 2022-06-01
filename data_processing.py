@@ -24,10 +24,10 @@ warnings.filterwarnings('ignore')
 
 
 
-df = pd.read_csv(f"train.csv")
+
 # backup_df = pd.read_csv('train.csv')
 
-test_df = pd.read_csv(f"test.csv")
+#test_df = pd.read_csv(f"test.csv")
 # backup_test_df = pd.read_csv('test.csv')
 
 # all_stopwords=nltk.download('stopwords')
@@ -295,7 +295,8 @@ def word_lemmatizer(text):
     return ' '.join([lemmatizer.lemmatize(word) for word in text.split()])
 
 
-def preProcessing():
+def preProcessing(csv_path:str,output_path:str)->str:
+    df = pd.read_csv(f"{csv_path}/train.csv")
     df['text'] = df['text'].str.lower() # convert to lowercase
     df['text'] = df['text'].apply(lambda text: remove_urls(text)) # remove URLs
     df['text'] = df['text'].apply(lambda text: remove_HTML(text)) # remove HTML tags
@@ -318,8 +319,8 @@ def preProcessing():
     # test_df['text'] = test_df['text'].apply(lambda text: word_lemmatizer(text)) # lemmatize words
     # test_df['text'] = test_df['text'].apply(lambda text: th.cont_exp(text)) # convert i'm to i am, you're to you are, etc
 
-    df.to_csv(f"/data/pre_processing.csv")
-    return 'pre_processing'
+    df.to_csv(f"/{output_path}/pre_processing.csv")
+    return 'Preprocessing has been done'
 
 
 # def dropArguments():
@@ -330,15 +331,12 @@ def preProcessing():
 
 if __name__ == "__main__":
     command = sys.argv[1]
+    csv_path = os.environ["CSV_PATH"]
+    output_path = os.environ["OUTPUT_PATH"]
+
     functions = {
         "preProcessing": preProcessing,
         # "dropArguments": dropArguments,
     }
-    output = functions[command]()
+    output = functions[command](csv_path,output_path)
     print(yaml.dump({"output": output}))
-
-
-
-
-
-
