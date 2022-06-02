@@ -70,4 +70,4 @@ jobs:
       - name: Import data_processing package
         shell: bash
         run: |
-          brane run --data ./data test.txt
+          brane run --data ./data test_preprocessing.py
