@@ -8,5 +8,5 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(preProcessing('/data', '/data'), "pre_processing")
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     unittest.main()
