@@ -67,7 +67,7 @@ jobs:
         run: |
           brane list
 
-      - name: Import data_processing package
+      - name: Import data processing package
         shell: bash
         run: |
-          brane run --data ./data test_preprocessing.py
+          (set -o pipefail && echo "import data_processing;" | brane repl -c)
