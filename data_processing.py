@@ -11,18 +11,24 @@ from nltk.corpus import stopwords
 from nltk.stem import wordnet
 # import text_hammer as th
 
-# from sklearn.feature_extraction.text import CountVectorizer
-# from sklearn.model_selection import train_test_split
-
 # import tensorflow as tf
+# from tensorflow import keras
+# from tensorflow.keras import layers, Input, Model
+# from keras.callbacks import ReduceLROnPlateau
+# from keras.losses import BinaryCrossentropy
+
+# import transformers
+# from transformers import AutoTokenizer, DataCollatorWithPadding
+# from transformers import AutoModelForSequenceClassification, TrainingArguments
+# from transformers import TFBertModel, Trainer
+# from tokenizers import Tokenizer
+# from transformers import BertTokenizer
 
 import sys
 import yaml
 
 import warnings
 warnings.filterwarnings('ignore')
-
-
 
 
 # backup_df = pd.read_csv('train.csv')
@@ -323,10 +329,66 @@ def preProcessing(csv_path:str,output_path:str)->str:
     return 'Preprocessing has been done'
 
 
-# def dropArguments():
-#     df_drop = df.drop(columns = ['id', 'keyword', 'location'])
-#     df_drop.to_csv(f"/data/dropArguments.csv")
-#     return 'Successfully drop columns!'
+# def model_training(csv_path:str,output_path:str)->str:
+#     df = pd.read_csv(f"{csv_path}/train.csv")
+#     tokenizer = AutoTokenizer.from_pretrained('bert-large-uncased')
+#     bert = TFBertModel.from_pretrained('bert-large-uncased')
+
+#     X_train = tokenizer(
+#         text = df['text'].tolist(),
+#         add_special_tokens = True,
+#         max_length = 36, 
+#         truncation = True,
+#         padding = True, 
+#         return_tensors = 'tf',
+#         return_token_type_ids = False,
+#         return_attention_mask = True,
+#         verbose = True)
+
+#     X_test = tokenizer(
+#         text = test_df['text'].tolist(),
+#         add_special_tokens = True,
+#         max_length = 36, 
+#         truncation = True,
+#         padding = True, 
+#         return_tensors = 'tf',
+#         return_token_type_ids = False,
+#         return_attention_mask = True,
+#         verbose = True)
+
+#     X_train['input_ids'].shape
+#     X_train['attention_mask'].shape
+#     y_train = df['target'].values
+
+#     input_ids = Input(shape=(36,), dtype=tf.int32, name = 'input_ids')
+#     input_mask = Input(shape=(36,), dtype=tf.int32, name = 'attention_mask')
+
+#     embeddings = bert(input_ids, attention_mask = input_mask)[1]
+#     layer = layers.Dropout(0.2)(embeddings)
+#     layer = layers.Dense(32, activation = 'relu')(layer)
+#     y = layers.Dense(1, activation = 'sigmoid')(layer)
+
+#     model = keras.Model(inputs = [input_ids, input_mask], outputs = y)
+#     model.compile(
+#     optimizer = keras.optimizers.Adam(learning_rate = 6e-6, epsilon = 1e-8, decay = 0.01, clipnorm = 1.0),
+#     loss = BinaryCrossentropy(from_logits = True), 
+#     metrics = ['accuracy']
+#     )
+
+#     classifier = model.fit(
+#     x = {'input_ids': X_train['input_ids'],
+#         'attention_mask': X_train['attention_mask']
+#         },
+#     y = y_train,
+#     validation_split = 0.05,
+#     epochs = 5,
+#     batch_size = 16
+#     )
+#     model.evaluate({'input_ids': X_train['input_ids'],
+#                 'attention_mask': X_train['attention_mask']}, 
+#                  y_train)
+                 
+#     return 'Model has been trained!'
 
 
 if __name__ == "__main__":
@@ -336,7 +398,7 @@ if __name__ == "__main__":
 
     functions = {
         "preProcessing": preProcessing,
-        # "dropArguments": dropArguments,
+        # "model_training": model_training,
     }
     output = functions[command](csv_path,output_path)
     print(yaml.dump({"output": output}))
